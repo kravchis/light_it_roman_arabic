@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<script
+			  src="https://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous">
+		</script>
+		<script type="text/javascript">
+			var server = "http://127.0.0.1:5000";
+			var op_num = {'number':''};
+			function update_var()
+			{
+				var n1 = $("#n1").val();
+				op_num['number']= n1;
+			}
+			$( function() {
+				$( "#calc" ).click(function() {
+					var appdir='/convert';
+					var send_msg = "<p>Sending numbers</p>";
+					var received_msg = "<p>Result returned</p>";
+					update_var();
+					console.log(send_msg);
+					$('#message').html(send_msg);
+					$.ajax({
+  						type: "POST",
+  						url:server+appdir,
+						data: op_num,
+  						dataType: 'json'
+					}).done(function(data) { 
+						console.log(data);
+						$('#n3').val(data['conv']);
+						$('#message').html(received_msg+data['msg']);
+						
+
+					});
+				});
+  			});
+
+		</script>
+	</head>
+	<body>
+		<div>
+			<div>
+				<h1>ROMAN TO ARABIC AND ARABIC TO ROMAN CONVERTER</h1>
+				<label>Your number:</label><input id="n1" type="text" value="">
+				<label>Result:</label><input id="n3" type="text" value="" readonly="readonly"/><br/></br>
+				<div id="calc" style="background-color:gray; width:100px; color:white;">
+					convert
+				</div>
+			</div>
+			<div id="message">
+			</div>
+		</div>
+	</body>
+</html>
